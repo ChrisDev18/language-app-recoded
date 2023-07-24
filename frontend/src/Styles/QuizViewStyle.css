@@ -1,0 +1,127 @@
+.QuizViewContainer {
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  position: relative;
+}
+
+.QuizTopBar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px 10px 10px;
+  gap: 10px;
+  justify-content: space-around;
+  background: white;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+
+.QuizInfo {
+  all: revert;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+  gap: 10px;
+}
+
+.SectionHeader {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  color: black;
+  margin: 0;
+}
+
+.SectionInfo {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #4B4B4B;
+  margin: 0;
+}
+
+#entryList {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  padding: 20px 10px;
+
+  gap: 10px;
+  z-index: 0;
+  width: fit-content;
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.RelativeWrapper {
+  position: relative;
+}
+
+#addButton {
+  position: absolute;
+  bottom: 60px;
+  right: 40px;
+}
+
+.Background {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.5);
+  margin: auto 0;
+}
+
+#addButton:hover span {
+  display: none;
+}
+#addButton:hover:before {
+  content: "Add term";
+}
+
+#QuizRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+#QuizLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+#SaveState {
+  font-weight: 500;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.67);
+  padding: 0 12px;
+}
+
+.StatusBar {
+  background-color: #3E63DD;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0px 0px 16px rgba(62, 99, 221, 0.5);
+  font-weight: 500;
+  font-size: 1em;
+  color: white;
+  padding: 8px;
+  transition: background-color ease 200ms;
+  position: relative;
+  z-index: 1;
+}
+
+.StatusBar.error {
+  background-color: #ec474c;
+  box-shadow: 0px 0px 16px rgb(236, 71, 76);
+}

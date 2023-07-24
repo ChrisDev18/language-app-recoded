@@ -1,0 +1,113 @@
+/*Typography*/
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+h1, p {
+    margin: 0;
+}
+
+root {
+    font-family: 'Inter', 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/*Button Styles*/
+button {
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 1em;
+    border: none;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 100ms cubic-bezier(0.24, 0.89, 0.57, 1.58), background-color 100ms ease;
+    width: fit-content;
+    height: fit-content;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.047);
+}
+
+button:active {
+    background-color: rgba(0, 0, 0, 0.09);
+}
+
+button.Main {
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 100ms cubic-bezier(0.24, 0.89, 0.57, 1.58), background-color 100ms ease;
+    background-color: #3e63dd;
+    color: #FFFFFFEB;
+    box-shadow: 0 2px 4px rgba(73, 120, 224, 0.75);
+}
+
+button.Main:hover {
+    background-color: #3A5CCCFF;
+    box-shadow: 0 4px 8px rgba(41, 77, 154, 0.5);
+    transform: scale(105%);
+}
+
+button.Main:active {
+    background-color: #849DFFFF;
+    box-shadow: none;
+    transform: scale(90%);
+}
+
+
+/*Input*/
+input {
+    display: inline;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+    padding: 10px;
+    font-size: 1em;
+    background-color: transparent;
+    transition: color, border-bottom ease 100ms;
+    outline: none;
+}
+
+input:focus {
+    border-bottom-color: #000000;
+}
+
+input.error {
+    border-bottom-color: rgba(205, 43, 49, 0.5);
+}
+
+input.error:focus {
+    border-bottom-color: #cd2b31;
+}
+
+input.error::placeholder {
+    color: rgba(205, 43, 49, 0.5);
+}
+
+
+/*Shapes*/
+.circle {
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    min-height: fit-content;
+    height: fit-content;
+}
+
+/*icons*/
+.material-symbols-outlined {
+    font-variation-settings:
+            'FILL' 0,
+            'wght' 600,
+            'GRAD' 0,
+            'opsz' 48
+}

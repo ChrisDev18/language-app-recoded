@@ -1,0 +1,102 @@
+.QuizInstance {
+    display: inline-block;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0px;
+    background-color: white;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    height: fit-content;
+    width: 20em;
+    transition: all 100ms cubic-bezier(0.24, 0.89, 0.57, 1.58), background-color 100ms ease;
+    padding: 0;
+}
+
+/*QuizInstance:hover {*/
+/*    background-color: #3A5CCCFF;*/
+/*    box-shadow: 0 4px 8px rgba(41, 77, 154, 0.5);*/
+/*    transform: scale(105%);*/
+/*    webkit-transform: rotate(0deg);*/
+/*}*/
+
+/*QuizInstance:hover #EntryPeek::before {*/
+/*    background: linear-gradient(rgba(255, 255, 255, 0) 0%, #3A5CCCFF 100%);*/
+/*}*/
+
+/*QuizInstance:active #EntryPeek::before {*/
+/*    background: linear-gradient(rgba(255, 255, 255, 0) 0%, #849DFFFF 100%);*/
+/*}*/
+
+/*QuizInstance:active {*/
+/*    background-color: #849DFFFF;*/
+/*    box-shadow: none;*/
+/*    transform: scale(90%);*/
+/*    webkit-transform: rotate(0deg);*/
+/*}*/
+
+
+
+#Content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 16px 0px;
+    gap: 10px;
+    align-items: stretch;
+}
+
+#BottomBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    align-items: flex-start;
+    padding: 10px 16px;
+    background: #3E63DD;
+    border-radius: 0px 0px 16px 16px;
+}
+
+#Title {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+#Tags {
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+#EntryPeek {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+
+#EntryPeek::before {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+    position: absolute;
+    content: "\00a0";
+
+}
+
+.Row {
+    display: flex;
+    flex-direction: row;
+}
+
+p {
+    text-align: left;
+}
+
+.Row p {
+    font-weight: 500;
+    font-size: 14px;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
