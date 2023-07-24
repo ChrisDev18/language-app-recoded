@@ -1,8 +1,26 @@
-# Getting Started with Create React App
+# Welcome to the Front-End
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Technology used
+The front-end User Interface is made using *React.js* running on *Node.js*.
+This is a single-page app right now so *Create-React-App* was used to create the project.
 
-## Available Scripts
+For the Design System and UI design files go to my Figma Community account for rich component-based UI modules
+
+# Developing for the Front-End
+
+## Data Models
+Models are slightly abstracted between front-end and back-end, since one side stores data in a database
+and the other manipulates it facing the user.
+
+At front-end, all data models are stored as objects, accurately representing ownership hierarchy
+(e.g. entries belong to a quiz object)
+
+For the Data Model interfaces, see the **src/Models/Models.tsx** TypeScript file
+
+## Opening the project
+The front-end project was made in JetBrains WebStorm and is the suggested IDE to open and edit front-end code.
+
+## Running the project
 
 In the project directory, you can run:
 
@@ -27,20 +45,15 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Designing for the Front-End
 
-### `npm run eject`
+**language-app-recoded** is working on a design system to ensure design cohesion throughout the app.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## The Design System
+### Typeface and Icon Library
+- *Inter* is the current preferred typeface for text.
+- *Material Symbol* is the preferred symbol typeface for symbols/icons.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Colour Variables
+**language-app-recoded** uses *Radix Colors* for accessibility, dark theming, and design consistency.
+See more about the project here: https://www.radix-ui.com/colors
