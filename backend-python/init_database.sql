@@ -38,7 +38,7 @@ CREATE TABLE entry (
     index INTEGER NOT NULL,
 
     FOREIGN KEY (parent_id)
-    REFERENCES account (account_id)
+    REFERENCES quiz (quiz_id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
     NOT VALID

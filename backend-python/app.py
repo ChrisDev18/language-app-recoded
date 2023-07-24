@@ -137,7 +137,7 @@ def getQuiz(quiz_id: int):  # gets quiz from id
 
             # form json HTTP response
             response = jsonify(quiz)
-            response.headers.add('Access-Control-Allow-Origin', '*')
+            # response.headers.add('Access-Control-Allow-Origin', '*')
 
     return response
 
@@ -175,7 +175,7 @@ def saveQuiz():
             # response.headers.add('Access-Control-Allow-Origin', '*')
             # response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
             # response.headers.add('Access-Control-Allow-Methods', 'PUT')
-            response.headers.add("Connection", "keep-alive")
+            # response.headers.add("Connection", "keep-alive")
 
     return response
 

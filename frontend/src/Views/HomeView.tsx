@@ -70,6 +70,11 @@ export default function HomeView({accountData, setAccountData, setQuiz, setMainC
         }
     }
 
+    function handleCreateQuizClicked() {
+        setQuiz(undefined)
+        setMainContent('quiz')
+    }
+
 
     return (
         <div className={"HomeViewContainer"}>
@@ -83,8 +88,9 @@ export default function HomeView({accountData, setAccountData, setQuiz, setMainC
                 </div>
             </div>
             <div className={"QuizLayout"}>
-                {quizList}
+                {quizList.length > 0 ? quizList : <p>You have no quizzes. Try refreshing to update, or make a quiz with the button below</p>}
             </div>
+            <button className={"Main"} type={"button"} onClick={handleCreateQuizClicked}>Create Quiz</button>
         </div>
     );
 }

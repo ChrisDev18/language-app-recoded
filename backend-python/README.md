@@ -18,3 +18,6 @@ since one side stores data in a database and the other manipulates it facing the
 At back-end, data is accessed from the database as entities,
 and then converted and sent out the API as objects,
 accurately representing ownership hierarchy (e.g. entries belong to a quiz object)
+
+## API Documentation
+For documentation of InterAPI's endpoints, [see the relavent GitBooks page](https://app.gitbook.com/s/B8J9ERiRs7mSSdbsVs3l/)
