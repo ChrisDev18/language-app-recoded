@@ -6,6 +6,9 @@ import '../Styles/GlobalStyles.css';
 import {Entry_Model, Quiz_Model, ToastModel} from "../Models/Models";
 import LoadingOverlay from "./LoadingOverlay";
 import Toast from "./Toast";
+import Tooltip from "./Tooltip";
+import {AlertDialog} from "@radix-ui/react-alert-dialog";
+import AlertDialogDemo from "./AlertDialog";
 
 export default function QuizView({setMainContent, init_data = undefined, init_editMode = false}: Quiz_Args) {
     // if quiz empty (new), initialise it
@@ -87,7 +90,6 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
     async function handleSave() {
         if (checkValidity().length === 0) {
             // when valid
-            // TODO save quiz in database
             try {
                 setIsLoading(true);
                 let body: string = JSON.stringify(dataModel);
@@ -144,23 +146,12 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
     }
 
     function handleDiscard() {
-        let accepted: boolean = true;
-        // check if there are any changes to discard
-        if (checkIfChanged()) {
-            // eslint-disable-next-line no-restricted-globals
-            accepted = confirm("Are you sure you wish to discard your changes?");
-        }
-
-        if (accepted) {
-            if (dataModel.id < 0) {
-                setMainContent('home');
-            } else {
-                // TODO reset the entries
-                setDataModel(originalQuiz);
-                setEditMode(false);
-            }
+        if (dataModel.id < 0) {
+            setMainContent('home');
         } else {
-            return;
+            // TODO reset the entries
+            setDataModel(originalQuiz);
+            setEditMode(false);
         }
     }
 
@@ -215,48 +206,69 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
     // what to render when editing quiz
     if (editMode) {
         return (
-            <div className={"QuizViewContainer"}>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+            <div id={"Quiz"}>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
                 <LoadingOverlay message={"Saving quiz"} active={isLoading} />
                 <Toast properties={toastProperty} setProperties={setToastProperty} />
 
-                <div className={"TopBar"}>
-                    <div className={"QuizInfo"}>
-                        <input id={"TitleInput"}
-                               className={"SectionHeader" + (["", " "].includes(dataModel.title) ? " error" : "")}
+                <div id={"Quiz-Topbar"}>
+                    <div id={"Quiz-Topbar-Info"}>
+                        <input id={"Quiz-Topbar-Info-Title"}
+                               className={["", " "].includes(dataModel.title) ? " error" : ""}
                                onInput={handleUpdateTitle}
                                value={dataModel.title}
                                placeholder={"Give your quiz a title"}/>
-                        <input id={"DescriptionInput"}
-                               className={"SectionInfo"}
+                        <input id={"Quiz-Topbar-Info-Description"}
                                onInput={handleUpdateDescription}
                                value={dataModel.description}
                                placeholder={"What's this quiz about?"}/>
                     </div>
 
-                    <div id={"QuizRight"}>
-                        {checkIfChanged() ? <p id={"SaveState"}>Unsaved changes</p> : null}
-                        <button type={"button"} disabled={!(checkValidity().length===0) || !checkIfChanged()} onClick={handleSave}>Save</button>
-                        <button type={"button"} id={"DiscardButton"} onClick={handleDiscard}>{checkIfChanged() ? "Discard" : "Back"}</button>
-                    </div>
-                </div>
+                    {checkIfChanged() ? <p id={"SaveState"}>Unsaved changes</p> : null}
 
-                <div id={"center"}>
-                    <div id={"entryList"}>
-                        {termsList.length === 0 ? <p className={"Background"}>This quiz has no terms, press the button below to add a term</p> : termsList}
+                    <Tooltip text={checkIfChanged() ? "Discard edits" : "Back"} side={"bottom"} delayDuration={200}>
+                        <AlertDialogDemo alert={dataModel.id < 0 ? "Discard quiz" : "Discard edits"}
+                                         description={"You will not be able to get these changes back"}
+                                         onConfirm={handleDiscard}
+                                         confirmText={"Discard"}>
+                            <button className={"Symbol"} type={"button"} id={"DiscardButton"} onClick={checkIfChanged()? undefined : handleDiscard}>
+                                <span className="material-symbols-rounded">
+                                    arrow_back
+                                </span>
+                            </button>
+                        </AlertDialogDemo>
+                    </Tooltip>
+                    <Tooltip text={"Save quiz"} side={"bottom"} delayDuration={200}>
+                        <button id={"Quiz.Topbar.Save"} className={"Main Symbol"} type={"button"} disabled={!(checkValidity().length===0) || !checkIfChanged()} onClick={handleSave}>
+                            <span className="material-symbols-rounded">
+                                save
+                            </span>
+                        </button>
+                    </Tooltip>
+                </div>
+                <div id={"Quiz-Entries-Overlay-Wrapper"}>
+                    <div id={"Quiz-Entries-Scroll-Wrapper"}>
+                        <div id={"Quiz-Entries"}>
+                            {termsList.length === 0 ? <p className={"Background"}>This quiz has no terms, press the button below to add a term</p> : termsList}
+                        </div>
+
                     </div>
+                    <Tooltip text={"Add term"} side={"right"} delayDuration={200}>
+                        <button id={"Quiz-Entries-Add"}
+                                className={"Main Symbol"}
+                                type={"button"}
+                                onClick={handleAddEntry}>
+                            <span className="material-symbols-rounded">
+                                add
+                            </span>
+                        </button>
+                    </Tooltip>
                 </div>
 
                 <div className={(checkValidity().length===0) ? "StatusBar" : "StatusBar error"}
                      onMouseOver={() => setShowErrors(true)}
                      onMouseLeave={() => setShowErrors(false)}>
-                    <button id={"addButton"}
-                            className={"Main"}
-                            type={"button"}
-                            onClick={handleAddEntry}>
-                        <span>+</span>
-                    </button>
 
                     {(checkValidity().length===0) ? "Your quiz is ready to save!" :
                         (checkValidity().length===1) ? `There is ${checkValidity().length} thing you need to do` :
@@ -271,24 +283,29 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
     // what to render when viewing quiz
     } else {
         return (
-            <div className="QuizViewContainer">
+            <div id={"Quiz"}>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
                 <LoadingOverlay message={"Saving quiz"} active={isLoading} />
                 <Toast properties={toastProperty} setProperties={setToastProperty} />
-                <div className={"QuizTopBar"}>
-                    <div id={"QuizLeft"}>
-                        <button onClick={handleBack} type={"button"}>
+                <div id={"Quiz-Topbar"}>
+                    <button onClick={handleBack} type={"button"}>
                             <span className="material-symbols-outlined">arrow_back</span>
-                        </button>
-                        <div className={"QuizInfo"}>
-                            <h1 className={"SectionHeader"}>{dataModel.title}</h1>
-                            <p className={"SectionInfo"}>{dataModel.description}</p>
-                        </div>
+                    </button>
+
+                    <div id={"Quiz-Topbar-Info"}>
+                        <h1 className={"SectionHeader"}>{dataModel.title}</h1>
+                        <p className={"SectionInfo"}>{dataModel.description}</p>
                     </div>
-                    <button onClick={handleEdit} type={"button"}>Edit Quiz</button>
+
+                    <button className={"Main Symbol"} onClick={handleEdit} type={"button"}>
+                        <span className="material-symbols-rounded">
+                            edit
+                        </span>
+                    </button>
                 </div>
 
-                <div id={"center"}>
-                    <div id={"entryList"}>
+                <div id={"Quiz-Entries-Scroll-Wrapper"}>
+                    <div id={"Quiz-Entries"}>
                         {termsList}
                     </div>
                 </div>

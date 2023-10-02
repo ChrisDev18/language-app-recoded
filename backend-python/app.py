@@ -265,6 +265,19 @@ def saveEntry(entry_id: int):  # saves entry given an id
             cur.execute(query, (entry_id, entry_data["term_a"], entry_data["term_b"], entry_data["pos"], entry_data["parent_id"], entry_data["index"]))
 
 
+@app.route('/data/quiz/<int:quiz_id>', methods=['DELETE'])
+def deleteQuiz(quiz_id: int):
+    # initialise function's connection and cursor
+    conn: connection
+    with psycopg2.connect(host="localhost",
+                          database="language_app",
+                          user="language_admin",
+                          password="password") as conn:
+        cur: cursor
+        with conn.cursor() as cur:
+            deleted_id: int = deleteQuizDB(quiz_id, cur)
+            return deleted_id
+
 def getQuizDB(quiz_id: int, cur: cursor):
     """Retrieves quiz data from the Quiz table in the database
     Parameters
@@ -435,6 +448,25 @@ def saveEntriesDB(entries: [dict], quiz_id, cur: cursor) -> dict:
     print("Updated Entries: ", updatedEntries)
 
     return updatedEntries
+
+
+def deleteQuizDB(quiz_id, cur: cursor) -> int:
+    """Deletes a Quiz from the database
+
+    Parameters
+    ----------
+    quiz_id : int
+        The quiz to delete
+    cur : cursor
+        The cursor used to access the database
+    """
+
+    print("Deleting from Quiz table")
+
+    query = "DELETE FROM quiz WHERE quiz_id = %s RETURNING quiz_id"
+    cur.execute(query, (quiz_id,))
+    deleted_id = cur.fetchone()
+    return deleted_id
 
 
 def deleteOldEntries(quiz_id: int, current_ids: [int], cur: cursor):

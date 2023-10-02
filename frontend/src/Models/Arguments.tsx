@@ -28,7 +28,9 @@ export interface Entry_Args {
 export interface Quiz_Instance_Args {
     quiz: Quiz_Model,
     setQuiz: any,
-    setMainContent: any
+    setMainContent: any,
+    getQuizzes: any,
+    setToastProperty: any
 }
 
 export interface LoadingOverlayArgs {

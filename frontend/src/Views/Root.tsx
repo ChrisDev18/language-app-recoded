@@ -9,8 +9,16 @@ export default function Root() {
     const [quiz, setQuiz] = useState(undefined);
     const [accountData, setAccountData] = useState(account);
 
+    let theme;
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    if (prefersDarkScheme.matches) {
+        theme = "dark-theme";
+    } else {
+        theme = "";
+    }
+
     return (
-        <div className={"RootContainer"}>
+        <div className={"RootContainer " +  theme}>
             <div className={"SideBar"}>
                 {/*<p>Sidebar</p>*/}
             </div>
