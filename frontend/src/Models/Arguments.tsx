@@ -9,11 +9,13 @@ export interface Home_Args {
     accountData: Account_Model,
     setAccountData: any,
     setQuiz: any,
-    setMainContent: any
+    setMainContent: any,
+    setToastProperty: any
 }
 
 export interface Quiz_Args {
     setMainContent: any,
+    setToastProperty: any,
     init_data?: Quiz_Model,
     init_editMode?: boolean
 }

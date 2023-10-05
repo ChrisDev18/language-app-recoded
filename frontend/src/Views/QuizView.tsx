@@ -3,14 +3,13 @@ import '../Styles/QuizViewStyle.css';
 import {Quiz_Args} from "../Models/Arguments";
 import {QuizEntry} from "./QuizEntry";
 import '../Styles/GlobalStyles.css';
-import {Entry_Model, Quiz_Model, ToastModel} from "../Models/Models";
+import {Entry_Model, Quiz_Model} from "../Models/Models";
 import LoadingOverlay from "./LoadingOverlay";
-import Toast from "./Toast";
 import Tooltip from "./Tooltip";
-import {AlertDialog} from "@radix-ui/react-alert-dialog";
 import AlertDialogDemo from "./AlertDialog";
 
-export default function QuizView({setMainContent, init_data = undefined, init_editMode = false}: Quiz_Args) {
+
+export default function QuizView({setMainContent, setToastProperty, init_data = undefined, init_editMode = false}: Quiz_Args) {
     // if quiz empty (new), initialise it
     if (init_data === undefined) {
         init_data = {
@@ -29,13 +28,13 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
 
     // assign loading state
     const [isLoading, setIsLoading] = useState(false);
-    // assign toast opened state
-    let property: ToastModel = {
-        open: false,
-        title: "Toast",
-        description: "Description",
-        type: "success"}
-    const [toastProperty, setToastProperty] = React.useState(property);
+    // // assign toast opened state
+    // let property: ToastModel = {
+    //     open: false,
+    //     title: "Toast",
+    //     description: "Description",
+    //     type: "success"}
+    // const [toastProperty, setToastProperty] = React.useState(property);
 
     // assign states for whether the UI is in edit mode (and if the current data model is valid)
     const [editMode, setEditMode] = useState(init_editMode);
@@ -49,8 +48,8 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
             entry.index = i;
             return entry;
         }).map((entry) =>
-        <QuizEntry key={entry.id} id={entry.id} dataModel={dataModel} setDataModel={setDataModel} editable={editMode}/>
-    );
+            <QuizEntry key={entry.id} id={entry.id} dataModel={dataModel} setDataModel={setDataModel} editable={editMode}/>
+        );
 
     function checkEntry(entry: Entry_Model): boolean {
         let isValid = true
@@ -155,6 +154,47 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
         }
     }
 
+    async function handleDelete() {
+        try {
+            console.log(`http://127.0.0.1:5000/data/quiz/${dataModel.id}`)
+            // @ts-ignore
+            let response = await fetch(`http://127.0.0.1:5000/data/quiz/${dataModel.id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'text/plain',
+                    "Access-Control-Allow-Origin": "*"
+                },
+            });
+
+            if (response.ok) {
+                // can't do the following as no access to the update method
+                // // update the quiz list
+                // await getQuizzes()
+
+                setMainContent("home")
+
+                // show success toast
+                setToastProperty({
+                    open: true,
+                    title: "Quiz deleted successfully",
+                    description: "",
+                    type: "success"
+                });
+            } else {
+                throw new Error("HTTP Response: " + response.status);
+            }
+        } catch (error) {
+            console.error("Error retrieving data from API:", error)
+            setToastProperty({
+                open: true,
+                title: "Could not delete your quizzes",
+                description: "Error accessing data from API",
+                type: "error"
+            });
+
+        }
+    }
+
     function handleUpdateTitle(e: React.ChangeEvent<HTMLInputElement>) {
         setDataModel({
             ...dataModel,
@@ -210,7 +250,7 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
                 <LoadingOverlay message={"Saving quiz"} active={isLoading} />
-                <Toast properties={toastProperty} setProperties={setToastProperty} />
+                {/*<Toast properties={toastProperty} setProperties={setToastProperty} />*/}
 
                 <div id={"Quiz-Topbar"}>
                     <div id={"Quiz-Topbar-Info"}>
@@ -239,6 +279,20 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
                             </button>
                         </AlertDialogDemo>
                     </Tooltip>
+
+                    <Tooltip text={"Delete quiz"} side={"bottom"} delayDuration={200}>
+                        <AlertDialogDemo alert={"Delete quiz"}
+                                         description={"You will not be able to recover this quiz and its terms."}
+                                         onConfirm={handleDelete}
+                                         confirmText={"Delete"}>
+                            <button disabled={dataModel.id < 0} className={"Symbol"} type={"button"} id={"DeleteButton"} onClick={undefined}>
+                                <span className="material-symbols-rounded">
+                                    delete
+                                </span>
+                            </button>
+                        </AlertDialogDemo>
+                    </Tooltip>
+
                     <Tooltip text={"Save quiz"} side={"bottom"} delayDuration={200}>
                         <button id={"Quiz.Topbar.Save"} className={"Main Symbol"} type={"button"} disabled={!(checkValidity().length===0) || !checkIfChanged()} onClick={handleSave}>
                             <span className="material-symbols-rounded">
@@ -247,6 +301,7 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
                         </button>
                     </Tooltip>
                 </div>
+
                 <div id={"Quiz-Entries-Overlay-Wrapper"}>
                     <div id={"Quiz-Entries-Scroll-Wrapper"}>
                         <div id={"Quiz-Entries"}>
@@ -286,7 +341,7 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
             <div id={"Quiz"}>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
                 <LoadingOverlay message={"Saving quiz"} active={isLoading} />
-                <Toast properties={toastProperty} setProperties={setToastProperty} />
+                {/*<Toast properties={toastProperty} setProperties={setToastProperty} />*/}
                 <div id={"Quiz-Topbar"}>
                     <button onClick={handleBack} type={"button"}>
                             <span className="material-symbols-outlined">arrow_back</span>
@@ -296,6 +351,19 @@ export default function QuizView({setMainContent, init_data = undefined, init_ed
                         <h1 className={"SectionHeader"}>{dataModel.title}</h1>
                         <p className={"SectionInfo"}>{dataModel.description}</p>
                     </div>
+
+                    <Tooltip text={"Delete quiz"} side={"bottom"} delayDuration={200}>
+                        <AlertDialogDemo alert={"Delete quiz"}
+                                         description={"You will not be able to recover this quiz and its terms."}
+                                         onConfirm={handleDelete}
+                                         confirmText={"Delete"}>
+                            <button disabled={dataModel.id < 0} className={"Symbol"} type={"button"} id={"DeleteButton"} onClick={undefined}>
+                                <span className="material-symbols-rounded">
+                                    delete
+                                </span>
+                            </button>
+                        </AlertDialogDemo>
+                    </Tooltip>
 
                     <button className={"Main Symbol"} onClick={handleEdit} type={"button"}>
                         <span className="material-symbols-rounded">

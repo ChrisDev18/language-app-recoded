@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import psycopg2
 from psycopg2._psycopg import connection, cursor
 import json
@@ -10,39 +10,39 @@ CORS(app)
 
 
 # account routes
-@app.route('/data/account', methods=['GET'])
-def getAccounts():  # gets all accounts
-
-    conn: connection
-    with psycopg2.connect(host="localhost",
-                          database="language_app",
-                          user="language_admin",
-                          password="password") as conn:
-        cur: cursor
-        with conn.cursor() as cur:
-            selection = ["account_id", "name", "username", "creation_date"]
-            cur.execute("SELECT account_id, name, username, creation_date FROM account")
-
-            rows = cur.fetchall()
-
-            # form dictionary from rows
-            accounts = []
-
-            if rows:
-                for row in rows:
-                    account: dict = {}
-                    for i, val in enumerate(selection):
-                        account.update({val: row[i]})
-
-                    # serialize date
-                    account["creation_date"] = account["creation_date"].strftime("%Y-%m-%d")
-                    accounts.append(account)
-
-            # form json HTTP response
-            response = jsonify(accounts)
-            response.headers.add('Access-Control-Allow-Origin', '*')
-
-    return response
+# @app.route('/data/account', methods=['GET'])
+# def getAccounts():  # gets all accounts
+#
+#     conn: connection
+#     with psycopg2.connect(host="localhost",
+#                           database="language_app",
+#                           user="language_admin",
+#                           password="password") as conn:
+#         cur: cursor
+#         with conn.cursor() as cur:
+#             selection = ["account_id", "name", "username", "creation_date"]
+#             cur.execute("SELECT account_id, name, username, creation_date FROM account")
+#
+#             rows = cur.fetchall()
+#
+#             # form dictionary from rows
+#             accounts = []
+#
+#             if rows:
+#                 for row in rows:
+#                     account: dict = {}
+#                     for i, val in enumerate(selection):
+#                         account.update({val: row[i]})
+#
+#                     # serialize date
+#                     account["creation_date"] = account["creation_date"].strftime("%Y-%m-%d")
+#                     accounts.append(account)
+#
+#             # form json HTTP response
+#             response = jsonify(accounts)
+#             response.headers.add('Access-Control-Allow-Origin', '*')
+#
+#     return response
 
 
 @app.route('/data/account/<int:account_id>', methods=['GET'])
@@ -276,7 +276,7 @@ def deleteQuiz(quiz_id: int):
         cur: cursor
         with conn.cursor() as cur:
             deleted_id: int = deleteQuizDB(quiz_id, cur)
-            return deleted_id
+            return json.dumps(deleted_id, indent=4)
 
 def getQuizDB(quiz_id: int, cur: cursor):
     """Retrieves quiz data from the Quiz table in the database

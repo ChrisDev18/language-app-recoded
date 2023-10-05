@@ -8,16 +8,10 @@ import Toast from "./Toast";
 import Avatar from "./Avatar";
 import Tooltip from "./Tooltip";
 
-export default function HomeView({accountData, setAccountData, setQuiz, setMainContent}: Home_Args) {
+export default function HomeView({accountData, setAccountData, setQuiz, setMainContent, setToastProperty}: Home_Args) {
     // assign loading state
     const [isLoading, setIsLoading] = useState(false);
-    // assign toast opened state
-    let property: ToastModel = {
-        open: false,
-        title: "Toast",
-        description: "Description",
-        type: "success"}
-    const [toastProperty, setToastProperty] = React.useState(property);
+
 
     const quizList = accountData.quizzes
         .map((quiz) =>
@@ -82,7 +76,7 @@ export default function HomeView({accountData, setAccountData, setQuiz, setMainC
         <div id={"Home"}>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
             <LoadingOverlay message={"Loading your quizzes"} active={isLoading} />
-            <Toast properties={toastProperty} setProperties={setToastProperty} />
+
 
             <div id={"Home-Topbar"}>
                 <h1>Quizzes</h1>
