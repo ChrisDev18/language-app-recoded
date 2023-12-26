@@ -85,7 +85,7 @@ def getAccount(account_id: int):  # gets account from account_id
 
 # quiz routes
 @app.route('/data/quiz', methods=['GET'])
-def getQuizzes():  # gets all quizzes
+def get_quizzes():  # gets all quizzes
     """Retrieves several Quizzes from the database in JSON format."""
 
     # get the given account_id filter (if any)

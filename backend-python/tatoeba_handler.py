@@ -1,5 +1,3 @@
-from io import BytesIO
-
 
 def my_sort(line):
     line_fields = line.strip().split('\t')
@@ -8,7 +6,7 @@ def my_sort(line):
     return amount
 
 
-def sortTSV(file_path: str):
+def sort_tsv(file_path: str):
     file = open(file_path)
     contents = file.readlines()
 
@@ -22,4 +20,4 @@ def sortTSV(file_path: str):
     file.close()
 
 
-sortTSV("Tatoeba/Tatoeba-ENG-FRA.csv")
+sort_tsv("Tatoeba/Tatoeba-ENG-FRA.csv")
